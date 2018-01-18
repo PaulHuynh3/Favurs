@@ -1,0 +1,6 @@
+framework module Pods_Favurs {
+  umbrella header "Pods-Favurs-umbrella.h"
+
+  export *
+  module * { export * }
+}
