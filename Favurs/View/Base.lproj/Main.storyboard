@@ -74,22 +74,60 @@
             </objects>
             <point key="canvasLocation" x="209" y="210"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Messaging Table View Controller-->
         <scene sceneID="usy-t3-Qel">
             <objects>
-                <tableViewController id="bwT-jM-GaL" sceneMemberID="viewController">
+                <tableViewController id="bwT-jM-GaL" customClass="MessagingTableViewController" customModule="Favurs" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zA6-re-jgF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="eCC-Bd-tRg">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellIdentifier" rowHeight="84" id="eCC-Bd-tRg" customClass="MessageTableViewCell" customModule="Favurs" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="84"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eCC-Bd-tRg" id="E70-my-a8i">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="83.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FavursTeam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtE-8i-4cP">
+                                            <rect key="frame" x="94" y="11" width="82" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Paul's Pic lhl" translatesAutoresizingMaskIntoConstraints="NO" id="yIo-kB-Xhu">
+                                            <rect key="frame" x="16" y="4" width="70" height="70"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="70" id="7qe-VO-6w9"/>
+                                                <constraint firstAttribute="height" constant="70" id="9Qa-qc-3Z6"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Favurs! You currently do not have any messages. Please connect with individuals in the home page." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Stc-Z4-IlA">
+                                            <rect key="frame" x="94" y="40" width="265" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="yIo-kB-Xhu" firstAttribute="leading" secondItem="E70-my-a8i" secondAttribute="leading" constant="16" id="3iN-cI-D8U"/>
+                                        <constraint firstItem="Stc-Z4-IlA" firstAttribute="top" secondItem="E70-my-a8i" secondAttribute="top" constant="40" id="83y-2E-obG"/>
+                                        <constraint firstAttribute="trailing" secondItem="Stc-Z4-IlA" secondAttribute="trailing" constant="16" id="R7c-pZ-bRf"/>
+                                        <constraint firstItem="AtE-8i-4cP" firstAttribute="top" secondItem="E70-my-a8i" secondAttribute="top" constant="11" id="Z02-cs-Wof"/>
+                                        <constraint firstAttribute="bottom" secondItem="AtE-8i-4cP" secondAttribute="bottom" constant="51.5" id="adA-3y-Fwt"/>
+                                        <constraint firstItem="AtE-8i-4cP" firstAttribute="leading" secondItem="E70-my-a8i" secondAttribute="leading" constant="94" id="drK-V4-Mea"/>
+                                        <constraint firstAttribute="bottom" secondItem="Stc-Z4-IlA" secondAttribute="bottom" constant="22.5" id="g4a-YX-DA9"/>
+                                        <constraint firstItem="yIo-kB-Xhu" firstAttribute="top" secondItem="E70-my-a8i" secondAttribute="top" constant="4" id="sdc-cg-D7N"/>
+                                        <constraint firstItem="Stc-Z4-IlA" firstAttribute="leading" secondItem="E70-my-a8i" secondAttribute="leading" constant="94" id="u6R-MT-6NW"/>
+                                        <constraint firstAttribute="trailing" secondItem="AtE-8i-4cP" secondAttribute="trailing" constant="199" id="w88-V2-Zrv"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="favursImageView" destination="yIo-kB-Xhu" id="cMf-eP-SJ4"/>
+                                    <outlet property="messageLabel" destination="Stc-Z4-IlA" id="hpV-9d-8Cv"/>
+                                    <outlet property="nameLabel" destination="AtE-8i-4cP" id="hhc-Pp-c5r"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -101,7 +139,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8m5-cl-3IS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="310" y="1026"/>
+            <point key="canvasLocation" x="309.60000000000002" y="1025.9370314842579"/>
         </scene>
         <!--Messages-->
         <scene sceneID="7LG-Qx-rgI">
@@ -143,6 +181,7 @@
                 <tabBarController storyboardIdentifier="FavursMarketPlace" automaticallyAdjustsScrollViewInsets="NO" id="hta-83-gZo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dF9-2x-nfC">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -158,6 +197,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Paul's Pic lhl" width="1080" height="720"/>
         <image name="communication" width="28" height="20"/>
         <image name="home" width="23" height="24"/>
         <image name="profilePage" width="25" height="23"/>

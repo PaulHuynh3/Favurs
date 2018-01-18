@@ -16,6 +16,8 @@
 		DA5B20261FECB6DB002F00D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA5B20241FECB6DB002F00D8 /* LaunchScreen.storyboard */; };
 		DA5B20311FECBAED002F00D8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B20301FECBAED002F00D8 /* LoginViewController.swift */; };
 		DA7ED6C61FF0A4AA00FAE04C /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA7ED6C51FF0A4AA00FAE04C /* Login.storyboard */; };
+		DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */; };
+		DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */; };
 		DAAB01B01FF2172400FEBE1D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +32,8 @@
 		DA5B20271FECB6DB002F00D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA5B20301FECBAED002F00D8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DA7ED6C51FF0A4AA00FAE04C /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingTableViewController.swift; sourceTree = "<group>"; };
+		DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		DA9BB670CD95298362FB1EC9 /* Pods-Favurs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Favurs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Favurs/Pods-Favurs.release.xcconfig"; sourceTree = "<group>"; };
 		DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAE6ABA21FF5F58900E4929F /* Favurs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Favurs.entitlements; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 				DA5B201B1FECB6DB002F00D8 /* AppDelegate.swift */,
 				DA5B202F1FECBAAF002F00D8 /* View */,
 				DA5B202D1FECB838002F00D8 /* Login */,
+				DA8B67B7201049C300FC69EF /* Main */,
 				DA5B202E1FECB855002F00D8 /* Supporting Files */,
 			);
 			path = Favurs;
@@ -132,6 +137,15 @@
 				DA7ED6C51FF0A4AA00FAE04C /* Login.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DA8B67B7201049C300FC69EF /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */,
+				DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,6 +302,8 @@
 				DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */,
 				DA08FCC11FF40062008BA838 /* User.swift in Sources */,
 				DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */,
+				DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */,
+				DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
