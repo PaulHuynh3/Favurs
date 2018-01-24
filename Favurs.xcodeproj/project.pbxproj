@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4C7B629D8522E375E2DAE7D9 /* Pods_Favurs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF1C59DD893D0334D3D1FD3 /* Pods_Favurs.framework */; };
+		DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */; };
 		DA08FCC11FF40062008BA838 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA08FCC01FF40062008BA838 /* User.swift */; };
 		DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA08FCC41FF4574B008BA838 /* RegisterViewController.swift */; };
+		DA39703F2017EF91006BA246 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA39703E2017EF91006BA246 /* ChatViewController.swift */; };
 		DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B201B1FECB6DB002F00D8 /* AppDelegate.swift */; };
 		DA5B20211FECB6DB002F00D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA5B201F1FECB6DB002F00D8 /* Main.storyboard */; };
 		DA5B20231FECB6DB002F00D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA5B20221FECB6DB002F00D8 /* Assets.xcassets */; };
@@ -22,8 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketPlaceViewController.swift; sourceTree = "<group>"; };
 		DA08FCC01FF40062008BA838 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DA08FCC41FF4574B008BA838 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		DA39703E2017EF91006BA246 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		DA5B20181FECB6DB002F00D8 /* Favurs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Favurs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA5B201B1FECB6DB002F00D8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA5B20201FECB6DB002F00D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -142,8 +146,10 @@
 		DA8B67B7201049C300FC69EF /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */,
 				DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */,
 				DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */,
+				DA39703E2017EF91006BA246 /* ChatViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -268,6 +275,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -300,7 +308,9 @@
 			files = (
 				DA5B20311FECBAED002F00D8 /* LoginViewController.swift in Sources */,
 				DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */,
+				DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */,
 				DA08FCC11FF40062008BA838 /* User.swift in Sources */,
+				DA39703F2017EF91006BA246 /* ChatViewController.swift in Sources */,
 				DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */,
 				DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */,
 				DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */,

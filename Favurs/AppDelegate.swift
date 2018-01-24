@@ -43,6 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         UIView.transition(with: self.window!, duration: 0.5, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {self.window?.rootViewController = tabController}, completion: nil)
     }
+    
+    func transitionToLogin() {
+    let loginStoryboard = UIStoryboard.init(name: "Login", bundle: nil)
+    let loginVC = loginStoryboard.instantiateViewController(withIdentifier: "LoginScreen")
+        
+        UIView.transition(with: self.window!, duration: 0.5, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {self.window?.rootViewController = loginVC}, completion: nil)
+        
+    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

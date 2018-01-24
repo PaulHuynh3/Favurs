@@ -78,6 +78,7 @@ class RegisterViewController: UIViewController {
                             print("error with updating database", #line)
                             return
                         }
+                        print("user successfully saved into firebase db")
                         let appDelegate = UIApplication.shared.delegate as? AppDelegate
                         appDelegate?.transitionToUserHome()
                         

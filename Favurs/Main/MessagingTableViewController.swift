@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MessagingTableViewController: UITableViewController {
 
@@ -16,9 +17,20 @@ class MessagingTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-    
+        
+        setupNavBar()
     }
+    
+    
+    func setupNavBar() {
+    
+        
+    }
+    
+    
+    
+    
+    
     
     func defaultMessage(){
         favursTeamImage.image = #imageLiteral(resourceName: "Paul's Pic lhl")
