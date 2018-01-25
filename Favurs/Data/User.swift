@@ -7,7 +7,16 @@
 //
 
 import Foundation
-import FirebaseAuth
+import Firebase
+import UIKit
+
+class User: NSObject {
+    var username:String?
+    var email:String?
+    var profileImageUrl: String?
+    
+}
+
 
 
 

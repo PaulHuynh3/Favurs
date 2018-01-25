@@ -21,6 +21,7 @@
 		DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */; };
 		DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */; };
 		DAAB01B01FF2172400FEBE1D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */; };
+		DAD9A3D72018F5A3001CFD5C /* NewMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		DA9BB670CD95298362FB1EC9 /* Pods-Favurs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Favurs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Favurs/Pods-Favurs.release.xcconfig"; sourceTree = "<group>"; };
 		DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageTableViewController.swift; sourceTree = "<group>"; };
 		DAE6ABA21FF5F58900E4929F /* Favurs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Favurs.entitlements; sourceTree = "<group>"; };
 		DBF1C59DD893D0334D3D1FD3 /* Pods_Favurs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Favurs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDDF0CA72ACCB1AF1978E191 /* Pods-Favurs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Favurs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Favurs/Pods-Favurs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */,
 				DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */,
 				DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */,
+				DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */,
 				DA39703E2017EF91006BA246 /* ChatViewController.swift */,
 			);
 			path = Main;
@@ -307,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA5B20311FECBAED002F00D8 /* LoginViewController.swift in Sources */,
+				DAD9A3D72018F5A3001CFD5C /* NewMessageTableViewController.swift in Sources */,
 				DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */,
 				DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */,
 				DA08FCC11FF40062008BA838 /* User.swift in Sources */,

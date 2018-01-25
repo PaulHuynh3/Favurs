@@ -18,17 +18,9 @@ class MessagingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavBar()
     }
     
-    
-    func setupNavBar() {
-    
-        
-    }
-    
-    
-    
+
     
     
     

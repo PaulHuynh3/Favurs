@@ -168,6 +168,25 @@
                                 <rect key="frame" x="303" y="253" width="30" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profilePage" translatesAutoresizingMaskIntoConstraints="NO" id="msN-XS-3cy">
+                                <rect key="frame" x="136" y="163" width="141" height="94"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="RlY-B8-Pix" appends="YES" id="0fH-hB-3mh"/>
+                                </connections>
+                            </imageView>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bye-9t-HxE">
+                                <rect key="frame" x="136" y="266" width="141" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="02a-Z1-xVJ" appends="YES" id="Iea-Mi-ed8"/>
+                                </connections>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="wIu-tC-iCI"/>
@@ -180,13 +199,24 @@
                         <outlet property="errorCircleImageView" destination="VBM-zA-oDs" id="5dF-Ua-kmf"/>
                         <outlet property="passwordImageView" destination="tfU-PB-2M7" id="llu-ch-4li"/>
                         <outlet property="passwordTextField" destination="nGO-kE-exw" id="Rz0-Ke-9ap"/>
+                        <outlet property="uploadPictureImageView" destination="msN-XS-3cy" id="8GM-HJ-OfC"/>
                         <outlet property="userNameTextField" destination="eiA-Al-iyT" id="C3p-CN-5Zt"/>
                         <outlet property="usernameImageView" destination="oAH-77-Erh" id="IK3-Fv-tFQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Pm-Zw-qD9" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="RlY-B8-Pix">
+                    <connections>
+                        <action selector="uploadPhoto:" destination="eGz-NV-E1B" id="1GO-dp-5Ih"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="02a-Z1-xVJ">
+                    <connections>
+                        <action selector="uploadPhoto:" destination="eGz-NV-E1B" id="1ed-5W-DPS"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="447.19999999999999" y="31.934032983508249"/>
+            <point key="canvasLocation" x="447.19999999999999" y="31.773399014778327"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l7x-Jo-hCU">
@@ -1162,6 +1192,7 @@ zrDWsNmw67DusPMAAAAAAAACAQAAAAAAAABBAAAAAAAAAAAAAAAAAACw9Q
 </mutableData>
         </image>
         <image name="error" width="34" height="34"/>
+        <image name="profilePage" width="25" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="4ME-6D-cDh"/>
