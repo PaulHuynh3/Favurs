@@ -31,15 +31,17 @@ class MarketPlaceViewController: UITableViewController {
     }
     
     func fetchUserAndSetupNavBarTitle() {
-        let uid = Auth.auth().currentUser?.uid
-        Database.database().reference().child("Users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Database.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject]{
                 self.navigationItem.title = dictionary["username"] as? String
             }
             
-        })        
+        })
     }
+
 
     
     @objc func handleLogout(){
@@ -49,6 +51,7 @@ class MarketPlaceViewController: UITableViewController {
         } catch let logoutError {
             print(logoutError)
         }
+        
         DispatchQueue.main.async {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         appDelegate?.transitionToLogin()

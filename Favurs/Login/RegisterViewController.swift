@@ -19,8 +19,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var usernameImageView: UIImageView!
     @IBOutlet weak var emailImageView: UIImageView!
     @IBOutlet weak var passwordImageView: UIImageView!
-  let database = Database.database().reference(fromURL:"https://favurs-fef03.firebaseio.com/")
-
+    let database = Database.database().reference(fromURL:"https://favurs-fef03.firebaseio.com/")
+    
     override func viewDidLoad() {
         errorCircleImageView.isHidden = true
        
@@ -77,8 +77,13 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 //successfully authenticated user now upload picture to storage.
                 let imageName = NSUUID().uuidString
                 let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).png")
-                
-                if let uploadData = UIImagePNGRepresentation(self.uploadPictureImageView.image!) {
+            
+            
+            //without compression
+//            if let uploadData = UIImagePNGRepresentation(self.uploadPictureImageView.image!)
+            
+              //compresses the image
+                if let uploadData = UIImageJPEGRepresentation(self.uploadPictureImageView.image!, 0.1) {
                     storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                         
                 if let error = error {
