@@ -191,7 +191,7 @@
                     <navigationItem key="navigationItem" id="onb-0e-n2o">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="Email" id="b2c-Va-COH">
                             <connections>
-                                <segue destination="Jwj-RM-Y6A" kind="show" id="WHl-c9-2wL"/>
+                                <segue destination="Jwj-RM-Y6A" kind="show" id="FxO-od-hKs"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -337,6 +337,6 @@
         <image name="profilePage" width="25" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZYw-CW-Rgm"/>
+        <segue reference="a1A-6N-vNj"/>
     </inferredMetricsTieBreakers>
 </document>

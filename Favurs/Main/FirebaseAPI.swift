@@ -20,6 +20,8 @@ class FirebaseAPI: NSObject {
             if let dictionary = snapshot.value as? [String: AnyObject]{
                 
                 let user = User()
+                //this gives the unique user id.
+                user.id = snapshot.key
                 user.username = dictionary["username"] as? String
                 user.email = dictionary["email"] as? String
                 user.profileImageUrl = dictionary["profileImageUrl"] as? String
@@ -35,6 +37,7 @@ class FirebaseAPI: NSObject {
          
          if let dictionary = snapshot.value as? [String:AnyObject]{
          let user = User()
+         user.id = snapshot.key
          user.username = dictionary["username"] as? String
          user.email = dictionary["email"] as? String
          user.profileImageUrl = dictionary["profileImageUrl"] as? String

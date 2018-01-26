@@ -48,6 +48,18 @@ class NewMessageTableViewController: UITableViewController {
         
         return cell
     }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        navigationController?.popViewController(animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let user = self.users[indexPath.row]
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
+        
+        navigationController?.pushViewController(chatLogController, animated: true)
+    }
 
 }
 

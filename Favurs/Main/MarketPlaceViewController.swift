@@ -50,7 +50,6 @@ class MarketPlaceViewController: UITableViewController {
     func setupNavBarWithUser(_ user: User) {
         let titleView = UIButton()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        //        titleView.backgroundColor = UIColor.redColor()
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,16 +88,8 @@ class MarketPlaceViewController: UITableViewController {
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
         self.navigationItem.titleView = titleView
-      
-        titleView.addTarget(self, action: #selector(showChatController), for: .touchUpInside)
+    }
 
-    }
-    
-    @objc func showChatController() {
-        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
-        navigationController?.pushViewController(chatLogController, animated: true)
-//        navigationController?.present(chatLogController, animated: true, completion: nil)
-    }
     
     @objc func handleLogout(){
         

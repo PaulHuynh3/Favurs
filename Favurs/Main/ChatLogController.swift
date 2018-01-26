@@ -10,6 +10,13 @@ import UIKit
 import Firebase
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+    //user being set in messagetableviewcontroller.
+    var user: User? {
+        //Automatically set before viewdidload
+        didSet {
+            navigationItem.title = user?.username
+        }
+    }
     
     //creates a textfield reference.
     lazy var inputTextField: UITextField = {
@@ -23,8 +30,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        navigationItem.title = "Chat Log Controller"
-        
         collectionView?.backgroundColor = UIColor.white
         
         setupInputComponents()
@@ -81,17 +86,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let ref = Database.database().reference().child("messages")
         //creates a list of messages, it doesnt just replace it.
         let childRef = ref.childByAutoId()
-        //is it there best thing to include the name inside of the message node        
-        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let toID = user!.id!
+        let fromID = Auth.auth().currentUser?.uid
+        let timeStamp = Int(NSDate().timeIntervalSince1970)
         
-        FirebaseAPI.fetchDatabaseUser(uid: uid) { (user) in
+        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID!, "timeStamp":timeStamp] as [String : Any]
+        childRef.updateChildValues(values)
             
-            let user = user
-            
-            let values = ["text": self.inputTextField.text!, "username":user.username]
-            childRef.updateChildValues(values)
-            
-        }
+        
     }
     
     //enabling "enter" key.
