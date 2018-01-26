@@ -17,6 +17,9 @@ class MessagingTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "StepBack")
+        navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "StepBack")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
     }
     

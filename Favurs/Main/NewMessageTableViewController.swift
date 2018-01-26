@@ -15,6 +15,8 @@ class NewMessageTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         //fetch data from firebase
         fetchUser()
     }

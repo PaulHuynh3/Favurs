@@ -13,16 +13,22 @@ import Firebase
 class MarketPlaceViewController: UITableViewController {
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
-        
+        //set navigationcontroller's back image it occurs for everything connected to the nav controller.
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "StepBack")
+        navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "StepBack")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
      
         //need to adjust this so fbsdk login works as well.
         checkIfUserIsLoggedIn()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
     
-        
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             performSelector(inBackground: #selector(handleLogout), with: nil)
@@ -35,20 +41,24 @@ class MarketPlaceViewController: UITableViewController {
     func fetchUserAndSetupNavBarTitle() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
-        Database.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: AnyObject]{
-//                self.navigationItem.title = dictionary["username"] as? String
-                
-                let user = User()
-                user.username = dictionary["username"] as? String
-                user.email = dictionary["email"] as? String
-                user.profileImageUrl = dictionary["profileImageUrl"] as? String
-                
+//        Database.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//
+//            if let dictionary = snapshot.value as? [String: AnyObject]{
+////                self.navigationItem.title = dictionary["username"] as? String
+//
+//                let user = User()
+//                user.username = dictionary["username"] as? String
+//                user.email = dictionary["email"] as? String
+//                user.profileImageUrl = dictionary["profileImageUrl"] as? String
+//
+//                 self.setupNavBarWithUser(user)
+//            }
+        
+            FirebaseAPI.fetchDatabaseUser(uid: uid, completion: { (user) in
                 self.setupNavBarWithUser(user)
-            }
-            
-        })
+            })
+        
+//        })
     }
 
     //this sets 3 container views creating it programmatically.
@@ -101,8 +111,8 @@ class MarketPlaceViewController: UITableViewController {
     
     @objc func showChatController() {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
-//        navigationController?.pushViewController(chatLogController, animated: true)
-        navigationController?.present(chatLogController, animated: true, completion: nil)
+        navigationController?.pushViewController(chatLogController, animated: true)
+//        navigationController?.present(chatLogController, animated: true, completion: nil)
     }
     
     @objc func handleLogout(){

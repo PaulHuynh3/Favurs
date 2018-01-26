@@ -22,6 +22,7 @@
 		DA919D02201A8BCA00E89F34 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA919D01201A8BCA00E89F34 /* Extensions.swift */; };
 		DA919D04201AE78D00E89F34 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA919D03201AE78D00E89F34 /* ChatLogController.swift */; };
 		DAAB01B01FF2172400FEBE1D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */; };
+		DAC39029201BAAFC001BEF63 /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC39028201BAAFC001BEF63 /* FirebaseAPI.swift */; };
 		DAD9A3D72018F5A3001CFD5C /* NewMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		DA919D03201AE78D00E89F34 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		DA9BB670CD95298362FB1EC9 /* Pods-Favurs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Favurs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Favurs/Pods-Favurs.release.xcconfig"; sourceTree = "<group>"; };
 		DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DAC39028201BAAFC001BEF63 /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
 		DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageTableViewController.swift; sourceTree = "<group>"; };
 		DAE6ABA21FF5F58900E4929F /* Favurs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Favurs.entitlements; sourceTree = "<group>"; };
 		DBF1C59DD893D0334D3D1FD3 /* Pods_Favurs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Favurs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +153,7 @@
 		DA8B67B7201049C300FC69EF /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DAC39028201BAAFC001BEF63 /* FirebaseAPI.swift */,
 				DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */,
 				DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */,
 				DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */,
@@ -330,6 +333,7 @@
 				DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */,
 				DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */,
 				DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */,
+				DAC39029201BAAFC001BEF63 /* FirebaseAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

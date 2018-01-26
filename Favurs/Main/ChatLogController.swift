@@ -11,6 +11,7 @@ import Firebase
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
+    //creates a textfield reference.
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter message..."
@@ -21,13 +22,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         navigationItem.title = "Chat Log Controller"
         
         collectionView?.backgroundColor = UIColor.white
         
         setupInputComponents()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     
     func setupInputComponents() {
         let containerView = UIView()
@@ -73,12 +79,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
     @objc func handleSend() {
         let ref = Database.database().reference().child("messages")
+        //creates a list of messages, it doesnt just replace it.
         let childRef = ref.childByAutoId()
         //is it there best thing to include the name inside of the message node
-        let values = ["text": inputTextField.text!, "name": "Bran Stark"]
+        let user = User()
+        
+        let values = ["text": inputTextField.text!, "username": user.username]
         childRef.updateChildValues(values)
     }
     
+    //enabling "enter" key.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()
         return true
