@@ -81,11 +81,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let ref = Database.database().reference().child("messages")
         //creates a list of messages, it doesnt just replace it.
         let childRef = ref.childByAutoId()
-        //is it there best thing to include the name inside of the message node
-        let user = User()
+        //is it there best thing to include the name inside of the message node        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
         
-        let values = ["text": inputTextField.text!, "username": user.username]
-        childRef.updateChildValues(values)
+        FirebaseAPI.fetchDatabaseUser(uid: uid) { (user) in
+            
+            let user = user
+            
+            let values = ["text": self.inputTextField.text!, "username":user.username]
+            childRef.updateChildValues(values)
+            
+        }
     }
     
     //enabling "enter" key.

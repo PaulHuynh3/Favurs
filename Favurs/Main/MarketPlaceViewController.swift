@@ -40,25 +40,10 @@ class MarketPlaceViewController: UITableViewController {
     
     func fetchUserAndSetupNavBarTitle() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        
-//        Database.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//
-//            if let dictionary = snapshot.value as? [String: AnyObject]{
-////                self.navigationItem.title = dictionary["username"] as? String
-//
-//                let user = User()
-//                user.username = dictionary["username"] as? String
-//                user.email = dictionary["email"] as? String
-//                user.profileImageUrl = dictionary["profileImageUrl"] as? String
-//
-//                 self.setupNavBarWithUser(user)
-//            }
-        
+                
             FirebaseAPI.fetchDatabaseUser(uid: uid, completion: { (user) in
                 self.setupNavBarWithUser(user)
             })
-        
-//        })
     }
 
     //this sets 3 container views creating it programmatically.

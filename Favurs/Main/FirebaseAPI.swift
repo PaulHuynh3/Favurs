@@ -29,6 +29,21 @@ class FirebaseAPI: NSObject {
             }
         })
     }
-    
+    class func fetchDatabaseAllUsers(completion:@escaping (_ user: User) -> Void){
+        
+         Database.database().reference().child("Users").observe(.childAdded, with: { (snapshot) in
+         
+         if let dictionary = snapshot.value as? [String:AnyObject]{
+         let user = User()
+         user.username = dictionary["username"] as? String
+         user.email = dictionary["email"] as? String
+         user.profileImageUrl = dictionary["profileImageUrl"] as? String
+         
+            completion(user)
+         }
+         
+         }, withCancel: nil)
+    }
+
     
 }

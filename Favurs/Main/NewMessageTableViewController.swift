@@ -22,22 +22,13 @@ class NewMessageTableViewController: UITableViewController {
     }
 
     func fetchUser(){
-        Database.database().reference().child("Users").observe(.childAdded, with: { (snapshot) in
+        FirebaseAPI.fetchDatabaseAllUsers { (user) in
+            self.users.append(user)
             
-            if let dictionary = snapshot.value as? [String:AnyObject]{
-               let user = User()
-               user.username = dictionary["username"] as? String
-               user.email = dictionary["email"] as? String
-               user.profileImageUrl = dictionary["profileImageUrl"] as? String
-                
-               self.users.append(user)
-               
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
-    
-        }, withCancel: nil)
+        }
         
     }
     
