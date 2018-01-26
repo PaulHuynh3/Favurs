@@ -175,24 +175,44 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Paul" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUk-yK-ku4">
-                                            <rect key="frame" x="16" y="11" width="329" height="16"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paul" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUk-yK-ku4">
+                                            <rect key="frame" x="75" y="11" width="225" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Paul.huynh3@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6G-cd-aRF">
-                                            <rect key="frame" x="16" y="27" width="343" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paul.huynh3@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6G-cd-aRF">
+                                            <rect key="frame" x="75" y="33" width="225" height="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Paul's Pic lhl" translatesAutoresizingMaskIntoConstraints="NO" id="4Wu-xL-5DA">
+                                            <rect key="frame" x="7" y="0.0" width="50" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="ATy-Xr-9S2"/>
+                                                <constraint firstAttribute="height" constant="50" id="DXg-OV-ysc"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="JUk-yK-ku4" firstAttribute="top" secondItem="YMw-6t-CB7" secondAttribute="top" constant="11" id="0Vx-6T-1Wh"/>
+                                        <constraint firstItem="4Wu-xL-5DA" firstAttribute="bottom" secondItem="i6G-cd-aRF" secondAttribute="bottom" constant="5" id="1X0-4r-vlz"/>
+                                        <constraint firstItem="JUk-yK-ku4" firstAttribute="centerX" secondItem="YMw-6t-CB7" secondAttribute="centerX" id="H7K-ic-58h"/>
+                                        <constraint firstItem="4Wu-xL-5DA" firstAttribute="top" secondItem="JUk-yK-ku4" secondAttribute="top" constant="-11" id="LC6-nc-MSk"/>
+                                        <constraint firstItem="i6G-cd-aRF" firstAttribute="leading" secondItem="4Wu-xL-5DA" secondAttribute="trailing" constant="18" id="TFq-1o-j3F"/>
+                                        <constraint firstItem="JUk-yK-ku4" firstAttribute="leading" secondItem="YMw-6t-CB7" secondAttribute="leading" constant="75" id="ZdQ-Uw-6We"/>
+                                        <constraint firstItem="i6G-cd-aRF" firstAttribute="top" secondItem="YMw-6t-CB7" secondAttribute="top" constant="33" id="ag6-Ps-ckx"/>
+                                        <constraint firstItem="i6G-cd-aRF" firstAttribute="centerX" secondItem="YMw-6t-CB7" secondAttribute="centerX" id="d1n-EN-wFy"/>
+                                        <constraint firstItem="i6G-cd-aRF" firstAttribute="leading" secondItem="YMw-6t-CB7" secondAttribute="leading" constant="75" id="k2x-Ra-Q0N"/>
+                                        <constraint firstAttribute="bottom" secondItem="4Wu-xL-5DA" secondAttribute="bottom" constant="5.5" id="p7o-lo-FS5"/>
+                                        <constraint firstItem="4Wu-xL-5DA" firstAttribute="leading" secondItem="YMw-6t-CB7" secondAttribute="leading" constant="7" id="tvC-2p-mso"/>
+                                        <constraint firstItem="4Wu-xL-5DA" firstAttribute="top" secondItem="YMw-6t-CB7" secondAttribute="top" id="vmB-9E-fTY"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="emailLabel" destination="i6G-cd-aRF" id="qcI-IL-LH5"/>
+                                    <outlet property="profilePictureImageview" destination="4Wu-xL-5DA" id="C0k-vG-khT"/>
                                     <outlet property="usernameLabel" destination="JUk-yK-ku4" id="BIT-KZ-Soi"/>
                                 </connections>
                             </tableViewCell>

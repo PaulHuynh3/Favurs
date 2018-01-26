@@ -20,6 +20,7 @@
 		DA7ED6C61FF0A4AA00FAE04C /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA7ED6C51FF0A4AA00FAE04C /* Login.storyboard */; };
 		DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */; };
 		DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */; };
+		DA919D02201A8BCA00E89F34 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA919D01201A8BCA00E89F34 /* Extensions.swift */; };
 		DAAB01B01FF2172400FEBE1D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */; };
 		DAD9A3D72018F5A3001CFD5C /* NewMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,7 @@
 		DA7ED6C51FF0A4AA00FAE04C /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingTableViewController.swift; sourceTree = "<group>"; };
 		DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		DA919D01201A8BCA00E89F34 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DA9BB670CD95298362FB1EC9 /* Pods-Favurs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Favurs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Favurs/Pods-Favurs.release.xcconfig"; sourceTree = "<group>"; };
 		DAAB01AF1FF2172400FEBE1D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageTableViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				DA5B202F1FECBAAF002F00D8 /* View */,
 				DA5B202D1FECB838002F00D8 /* Login */,
 				DA8B67B7201049C300FC69EF /* Main */,
+				DA919D00201A8BA600E89F34 /* Helpers */,
 				DA5B202E1FECB855002F00D8 /* Supporting Files */,
 			);
 			path = Favurs;
@@ -155,6 +158,14 @@
 				DA39703E2017EF91006BA246 /* ChatViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		DA919D00201A8BA600E89F34 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DA919D01201A8BCA00E89F34 /* Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,6 +325,7 @@
 				DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */,
 				DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */,
 				DA08FCC11FF40062008BA838 /* User.swift in Sources */,
+				DA919D02201A8BCA00E89F34 /* Extensions.swift in Sources */,
 				DA39703F2017EF91006BA246 /* ChatViewController.swift in Sources */,
 				DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */,
 				DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */,

@@ -154,7 +154,9 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         present(alert, animated: true, completion: nil)
     }
     
-    //image picker delegate
+    
+    
+    //imagePicker delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var selectedImageFromPicker: UIImage?
         
@@ -167,8 +169,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         if let selectedImage = selectedImageFromPicker {
             self.uploadPictureImageView.image = selectedImage
-            self.uploadPictureImageView.layer.cornerRadius = self.uploadPictureImageView.frame.size.width/2
-            self.uploadPictureImageView.clipsToBounds = true
+//            self.uploadPictureImageView.layer.cornerRadius = self.uploadPictureImageView.frame.size.width/2
+//            self.uploadPictureImageView.clipsToBounds = true
 
         }
         dismiss(animated: true, completion: nil)

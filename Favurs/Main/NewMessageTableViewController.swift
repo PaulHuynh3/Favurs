@@ -43,11 +43,15 @@ class NewMessageTableViewController: UITableViewController {
         return users.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:"cellIdentifier", for: indexPath) as! UserCell
         let user = users[indexPath.row]
-        cell.usernameLabel.text = user.username
-        cell.emailLabel.text = user.email
+        
+        cell.setUpProfile(user: user)
         
         return cell
     }
@@ -56,8 +60,20 @@ class NewMessageTableViewController: UITableViewController {
 
 class UserCell: UITableViewCell {
 
+    @IBOutlet weak var profilePictureImageview: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
+    
+    func setUpProfile(user:User){
+        usernameLabel.text = user.username
+        emailLabel.text = user.email
+        //caching images using helper function.
+        profilePictureImageview.loadImagesUsingCacheWithUrlString(urlString: user.profileImageUrl!)
+        profilePictureImageview.layer.cornerRadius = 25
+        profilePictureImageview.layer.masksToBounds = true
+
+    }
+    
     
     
 }

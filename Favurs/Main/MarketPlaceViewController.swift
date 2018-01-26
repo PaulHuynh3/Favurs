@@ -26,17 +26,20 @@ class MarketPlaceViewController: UITableViewController {
             performSelector(inBackground: #selector(handleLogout), with: nil)
             handleLogout()
         } else {
-            let uid = Auth.auth().currentUser?.uid
-            Database.database().reference().child("Users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let dictionary = snapshot.value as? [String: AnyObject]{
-                    self.navigationItem.title = dictionary["username"] as? String
-                }
-                
-            })
+            fetchUserAndSetupNavBarTitle()
         }
     }
     
+    func fetchUserAndSetupNavBarTitle() {
+        let uid = Auth.auth().currentUser?.uid
+        Database.database().reference().child("Users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject]{
+                self.navigationItem.title = dictionary["username"] as? String
+            }
+            
+        })        
+    }
 
     
     @objc func handleLogout(){
