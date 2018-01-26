@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-class ChatViewController: UICollectionViewController{
+class ChatLogController: UICollectionViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        navigationItem.title = "Chat View Controller"
+        navigationItem.title = "Chat Log Controller"
         
         setupInputComponents()
     }

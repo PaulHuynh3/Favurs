@@ -11,7 +11,7 @@
 		DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */; };
 		DA08FCC11FF40062008BA838 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA08FCC01FF40062008BA838 /* User.swift */; };
 		DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA08FCC41FF4574B008BA838 /* RegisterViewController.swift */; };
-		DA39703F2017EF91006BA246 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA39703E2017EF91006BA246 /* ChatViewController.swift */; };
+		DA39703F2017EF91006BA246 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA39703E2017EF91006BA246 /* ChatLogController.swift */; };
 		DA5B201C1FECB6DB002F00D8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B201B1FECB6DB002F00D8 /* AppDelegate.swift */; };
 		DA5B20211FECB6DB002F00D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA5B201F1FECB6DB002F00D8 /* Main.storyboard */; };
 		DA5B20231FECB6DB002F00D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA5B20221FECB6DB002F00D8 /* Assets.xcassets */; };
@@ -29,7 +29,7 @@
 		DA030A1A20185CA000360473 /* MarketPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketPlaceViewController.swift; sourceTree = "<group>"; };
 		DA08FCC01FF40062008BA838 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DA08FCC41FF4574B008BA838 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		DA39703E2017EF91006BA246 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		DA39703E2017EF91006BA246 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		DA5B20181FECB6DB002F00D8 /* Favurs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Favurs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA5B201B1FECB6DB002F00D8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA5B20201FECB6DB002F00D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 				DA8B67B8201049F100FC69EF /* MessagingTableViewController.swift */,
 				DA8B67BA20104F3E00FC69EF /* MessageTableViewCell.swift */,
 				DAD9A3D62018F5A3001CFD5C /* NewMessageTableViewController.swift */,
-				DA39703E2017EF91006BA246 /* ChatViewController.swift */,
+				DA39703E2017EF91006BA246 /* ChatLogController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -326,7 +326,7 @@
 				DA030A1B20185CA000360473 /* MarketPlaceViewController.swift in Sources */,
 				DA08FCC11FF40062008BA838 /* User.swift in Sources */,
 				DA919D02201A8BCA00E89F34 /* Extensions.swift in Sources */,
-				DA39703F2017EF91006BA246 /* ChatViewController.swift in Sources */,
+				DA39703F2017EF91006BA246 /* ChatLogController.swift in Sources */,
 				DA08FCC51FF4574B008BA838 /* RegisterViewController.swift in Sources */,
 				DA8B67B9201049F100FC69EF /* MessagingTableViewController.swift in Sources */,
 				DA8B67BB20104F3E00FC69EF /* MessageTableViewCell.swift in Sources */,

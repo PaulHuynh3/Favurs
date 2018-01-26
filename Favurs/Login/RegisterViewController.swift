@@ -82,8 +82,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             //without compression
 //            if let uploadData = UIImagePNGRepresentation(self.uploadPictureImageView.image!)
             
+              guard let profileImage = self.uploadPictureImageView.image else {return}
+            
               //compresses the image
-                if let uploadData = UIImageJPEGRepresentation(self.uploadPictureImageView.image!, 0.1) {
+                if let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
                     storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                         
                 if let error = error {
