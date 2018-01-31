@@ -13,24 +13,8 @@ class MessageTableViewCell: UITableViewCell {
     
     var message: Message? {
         didSet{
-            //Populate the messagetablevc cellforrow. (maybe turn this into a function?
-            if let toID = message?.toID {
-                let ref = Database.database().reference().child("Users").child(toID)
-                
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    
-                    if let dictionary = snapshot.value as? [String: AnyObject]{
-                        
-                      
-                        self.nameLabel.text = dictionary["username"] as? String
-                        
-                        if let profileImageUrl = dictionary["profileImageUrl"] as? String{
-                            self.favursImageView.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
-                        }
-                    }
-                }, withCancel: nil)
-            }
+              setupNameAndProfileImage()
+            
               messageLabel.text = message?.text
             
             if let seconds = message?.timeStamp?.doubleValue {
@@ -54,11 +38,42 @@ class MessageTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
-    func setMessages(message:Message){
-        nameLabel.text = message.toID
-        messageLabel.text = message.text
+    
+    private func setupNameAndProfileImage(){
+        let chatPartnerId: String?
+        //condition to find who is the receipient and sender.
+        if message?.fromID == Auth.auth().currentUser?.uid{
+            chatPartnerId = message?.toID
+        } else {
+            chatPartnerId = message?.fromID
+        }
+        
+        if let id = chatPartnerId {
+            let ref = Database.database().reference().child("Users").child(id)
+            
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                
+                if let dictionary = snapshot.value as? [String: AnyObject]{
+                    
+                    self.nameLabel.text = dictionary["username"] as? String
+                    
+                    if let profileImageUrl = dictionary["profileImageUrl"] as? String{
+                        self.favursImageView.loadImagesUsingCacheWithUrlString(urlString: profileImageUrl)
+                    }
+                }
+            }, withCancel: nil)
+        }
         
     }
+
+    
+    
+    
+//    func setMessages(message:Message){
+//        nameLabel.text = message.toID
+//        messageLabel.text = message.text
+//
+//    }
 
 }

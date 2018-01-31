@@ -24,8 +24,9 @@ class MessagingTableViewController: UITableViewController {
         
         fetchUserAndSetupNavBarTitle()
         
-//        observeMessages()
-        observeUserMessages()
+        //moving this into setupnavbarwithuser.... (check if it will work with my code tmrw)
+        //should be able to see messages instantly and clear the old ones.
+//        observeUserMessages()
     }
     
     
@@ -88,6 +89,12 @@ class MessagingTableViewController: UITableViewController {
     
     //this sets 3 container views creating it programmatically.
     func setupNavBarWithUser(_ user: User) {
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        
         let titleView = UIButton()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
         //        titleView.backgroundColor = UIColor.redColor()
@@ -139,38 +146,6 @@ class MessagingTableViewController: UITableViewController {
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     
-    func observeMessages(){
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
-      
-        if let dictionary = snapshot.value as? [String:AnyObject]{
-        let message = Message()
-        message.toID = dictionary["toID"] as? String
-        message.fromID = dictionary["fromID"] as? String
-        message.timeStamp = dictionary["timeStamp"] as? NSNumber
-        message.text = dictionary["text"] as? String
-
-        //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
-            if let toId = message.toID {
-                self.messagesDictionary[toId] = message
-                //set the messages arry equal to the messagesDictionary which contains all the messages..
-                self.messages = Array(self.messagesDictionary.values)
-
-                //does a comparison to see which timestamp is greater and put that message on top.
-                self.messages.sort(by: { (message1, message2) -> Bool in
-                    return message1.timeStamp!.int32Value > message2.timeStamp!.int32Value
-                })
-            }
-           DispatchQueue.main.async {
-             self.tableView.reloadData()
-            }
-         }
-            
-        }, withCancel: nil)
-        
-    }
-    
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
@@ -189,23 +164,6 @@ class MessagingTableViewController: UITableViewController {
         return 72
     }
     
-    
-    
-    
-    
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//
-//        self.performSegue(withIdentifier: "showMessage", sender: self)
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//        if segue.identifier == "showMessage"{
-//
-//        }
-//
-//    }
 
   
 //    func defaultMessage{
