@@ -68,6 +68,8 @@ class UserCell: UITableViewCell {
     @IBOutlet weak var profilePictureImageview: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
+    
     
     func setUpProfile(user:User){
         usernameLabel.text = user.username

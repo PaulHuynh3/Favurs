@@ -19,7 +19,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var usernameImageView: UIImageView!
     @IBOutlet weak var emailImageView: UIImageView!
     @IBOutlet weak var passwordImageView: UIImageView!
-    let database = Database.database().reference(fromURL:"https://favurs-fef03.firebaseio.com/")
+    let database = Database.database().reference()
     
     override func viewDidLoad() {
         errorCircleImageView.isHidden = true

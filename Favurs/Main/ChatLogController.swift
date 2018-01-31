@@ -12,7 +12,7 @@ import Firebase
 class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     //user being set in messagetableviewcontroller.
     var user: User? {
-        //Automatically set before viewdidload
+        //set before viewdidload
         didSet {
             navigationItem.title = user?.username
         }
@@ -84,15 +84,33 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
     @objc func handleSend() {
         let ref = Database.database().reference().child("messages")
-        //creates a list of messages, it doesnt just replace it.
+        //generates a new message id
         let childRef = ref.childByAutoId()
         let toID = user!.id!
-        let fromID = Auth.auth().currentUser?.uid
-        let timeStamp = Int(NSDate().timeIntervalSince1970)
+        let fromID = Auth.auth().currentUser!.uid
+        let timeStamp = Int(Date().timeIntervalSince1970)
         
-        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID!, "timeStamp":timeStamp] as [String : Any]
-        childRef.updateChildValues(values)
+        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID, "timeStamp":timeStamp] as [String : Any]
+//        childRef.updateChildValues(values)
+        
+        childRef.updateChildValues(values) { (error, ref) in
+            if error != nil {
+                print(error)
+                return
+            }
             
+            //create new node in firebase that seperates user messages its fans out the database nodes(creates a new tree that uses the old tree as reference) episode 11.
+            //this is to add the from receipient
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromID)
+            
+            //this key gets the automatically generated key by ref.childbyautoid
+            let messageId = childRef.key
+            userMessageRef.updateChildValues([messageId: 1])
+            
+            //adding the to receipient
+            let receipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID)
+            receipientUserMessagesRef.updateChildValues([messageId: 1])
+        }
         
     }
     

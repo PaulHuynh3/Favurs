@@ -11,8 +11,10 @@ import Firebase
 
 class MessagingTableViewController: UITableViewController {
     
-    var users =  [User]()
     var messages = [Message]()
+    //stores the userid of receipient(group messages)
+    var messagesDictionary = [String: Message]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +24,55 @@ class MessagingTableViewController: UITableViewController {
         
         fetchUserAndSetupNavBarTitle()
         
-        observeMessages()
-    
+//        observeMessages()
+        observeUserMessages()
     }
+    
+    
+    func observeUserMessages(){
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+        
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        //.childAdded returns a specific element like messages associated with the key
+        ref.observe(.childAdded, with: { (snapshot) in
+        
+            let messageId = snapshot.key
+            //within the tree of the database messages... snapshot.key takes the user-messages of all messages relating to the currently logged in user.
+            let messageReference = Database.database().reference().child("messages").child(messageId)
+            
+            //.value returns all the value associated with the child references
+            messageReference.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String:AnyObject]{
+                    let message = Message()
+                    message.toID = dictionary["toID"] as? String
+                    message.fromID = dictionary["fromID"] as? String
+                    message.timeStamp = dictionary["timeStamp"] as? NSNumber
+                    message.text = dictionary["text"] as? String
+                    
+                    //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
+                    if let toId = message.toID {
+                        self.messagesDictionary[toId] = message
+                        //set the messages arry equal to the messagesDictionary which contains all the messages..
+                        self.messages = Array(self.messagesDictionary.values)
+                        
+                        //does a comparison to see which timestamp is greater and put that message on top.
+                        self.messages.sort(by: { (message1, message2) -> Bool in
+                            return message1.timeStamp!.int32Value > message2.timeStamp!.int32Value
+                        })
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+                
+            }, withCancel: nil)
+            
+        }, withCancel: nil)
+        
+    }
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }
@@ -95,17 +143,26 @@ class MessagingTableViewController: UITableViewController {
         let ref = Database.database().reference().child("messages")
         ref.observe(.childAdded, with: { (snapshot) in
       
-            if let dictionary = snapshot.value as? [String:AnyObject]{
+        if let dictionary = snapshot.value as? [String:AnyObject]{
         let message = Message()
         message.toID = dictionary["toID"] as? String
         message.fromID = dictionary["fromID"] as? String
-        message.timeStamp = dictionary["timeStamp"] as? Int
+        message.timeStamp = dictionary["timeStamp"] as? NSNumber
         message.text = dictionary["text"] as? String
 
-        self.messages.append(message)
+        //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
+            if let toId = message.toID {
+                self.messagesDictionary[toId] = message
+                //set the messages arry equal to the messagesDictionary which contains all the messages..
+                self.messages = Array(self.messagesDictionary.values)
 
+                //does a comparison to see which timestamp is greater and put that message on top.
+                self.messages.sort(by: { (message1, message2) -> Bool in
+                    return message1.timeStamp!.int32Value > message2.timeStamp!.int32Value
+                })
+            }
            DispatchQueue.main.async {
-            self.tableView.reloadData()
+             self.tableView.reloadData()
             }
          }
             
@@ -122,25 +179,33 @@ class MessagingTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath) as! MessageTableViewCell
         
         let message = messages[indexPath.row]
-        cell.messageLabel.text = message.text
-
+        
+        cell.message = message
         
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        self.performSegue(withIdentifier: "showMessage", sender: self)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "showMessage"{
-            
-        }
-        
-    }
+    
+    
+    
+    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//
+//        self.performSegue(withIdentifier: "showMessage", sender: self)
+//    }
+//
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        if segue.identifier == "showMessage"{
+//
+//        }
+//
+//    }
 
   
 //    func defaultMessage{
