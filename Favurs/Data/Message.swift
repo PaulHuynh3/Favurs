@@ -7,13 +7,26 @@
 //
 
 import UIKit
+import Firebase
 
 class Message: NSObject {
 
     var fromID: String?
     var text: String?
-    var timeStamp: NSNumber?
+    var timestamp: NSNumber?
     var toID: String?
+    
+    
+    
+    //determine who is the current user (sender or recipeient)
+    func chatPartnerId() -> String? {
+        if fromID == Auth.auth().currentUser?.uid{
+            return toID
+        } else {
+            return fromID
+        }
+    }
+    
     
     
 }

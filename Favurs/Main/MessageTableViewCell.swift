@@ -17,7 +17,7 @@ class MessageTableViewCell: UITableViewCell {
             
               messageLabel.text = message?.text
             
-            if let seconds = message?.timeStamp?.doubleValue {
+            if let seconds = message?.timestamp?.doubleValue {
                 let timestampDate = Date(timeIntervalSince1970: seconds)
                 
                 let dateFormatter = DateFormatter()
@@ -40,16 +40,9 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     private func setupNameAndProfileImage(){
-        let chatPartnerId: String?
         //condition to find who is the receipient and sender.
-        if message?.fromID == Auth.auth().currentUser?.uid{
-            chatPartnerId = message?.toID
-        } else {
-            chatPartnerId = message?.fromID
-        }
-        
-        if let id = chatPartnerId {
-            let ref = Database.database().reference().child("Users").child(id)
+        if let id = message?.chatPartnerId() {
+            let ref = Database.database().reference().child("users").child(id)
             
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 

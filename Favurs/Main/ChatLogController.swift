@@ -9,13 +9,64 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+    
+    var messages = [Message]()
+    let cellId = "cellId"
+    
     //user being set in messagetableviewcontroller.
     var user: User? {
         //set before viewdidload
         didSet {
             navigationItem.title = user?.username
+            
+            observeMessages()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //for scrolling
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.backgroundColor = UIColor.white
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        setupInputComponents()
+    }
+    
+    func observeMessages(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+        userMessagesRef.observe(.childAdded, with: { (snapshot) in
+            
+            let messageId = snapshot.key
+            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            
+            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+                
+                let message = Message()
+                message.fromID = dictionary["fromID"] as? String
+                message.toID = dictionary["toID"] as? String
+                message.text = dictionary["text"] as? String
+                message.timestamp = dictionary["timestamp"] as? NSNumber
+                
+                if message.chatPartnerId() == self.user?.id {
+                    self.messages.append(message)
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                    }
+                    
+                }
+                
+           
+            }, withCancel: nil)
+            
+            
+        }, withCancel: nil)
     }
     
     //creates a textfield reference.
@@ -27,21 +78,38 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         return textField
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
     
-        collectionView?.backgroundColor = UIColor.white
+    //MARK: Collectionview delegates
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:cellId, for: indexPath) as! ChatMessageCell
         
-        setupInputComponents()
+        let message = messages[indexPath.item]
+        cell.textView.text = message.text
+        
+        
+        cell.backgroundColor = UIColor.blue
+        
+        return cell
+    }
+    
+    //make the collection view size stretch entirely horizontally.
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: view.frame.width, height:80)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
     
-    
+    //MARK:UI Functions
     func setupInputComponents() {
         let containerView = UIView()
+        containerView.backgroundColor = UIColor.white
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(containerView)
@@ -88,9 +156,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let childRef = ref.childByAutoId()
         let toID = user!.id!
         let fromID = Auth.auth().currentUser!.uid
-        let timeStamp = Int(Date().timeIntervalSince1970)
+        let timestamp = Int(Date().timeIntervalSince1970)
         
-        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID, "timeStamp":timeStamp] as [String : Any]
+        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID, "timestamp":timestamp] as [String : Any]
 //        childRef.updateChildValues(values)
         
         childRef.updateChildValues(values) { (error, ref) in

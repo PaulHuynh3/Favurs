@@ -48,7 +48,7 @@ class MessagingTableViewController: UITableViewController {
                     let message = Message()
                     message.toID = dictionary["toID"] as? String
                     message.fromID = dictionary["fromID"] as? String
-                    message.timeStamp = dictionary["timeStamp"] as? NSNumber
+                    message.timestamp = dictionary["timestamp"] as? NSNumber
                     message.text = dictionary["text"] as? String
                     
                     //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
@@ -59,7 +59,7 @@ class MessagingTableViewController: UITableViewController {
                         
                         //does a comparison to see which timestamp is greater and put that message on top.
                         self.messages.sort(by: { (message1, message2) -> Bool in
-                            return message1.timeStamp!.int32Value > message2.timeStamp!.int32Value
+                            return message1.timestamp!.int32Value > message2.timestamp!.int32Value
                         })
                     }
                     DispatchQueue.main.async {
@@ -137,13 +137,15 @@ class MessagingTableViewController: UITableViewController {
         
         self.navigationItem.titleView = titleView
         
-        titleView.addTarget(self, action: #selector(showChatController), for: .touchUpInside)
+//        titleView.addTarget(self, action: #selector(showChatController), for: .touchUpInside)
         
     }
     
-    @objc func showChatController() {
+    func showChatController(_ user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -164,6 +166,30 @@ class MessagingTableViewController: UITableViewController {
         return 72
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = messages[indexPath.row]
+        
+        //function to determine who is the current user(recipient/sender)
+        guard let chatPartnerId = message.chatPartnerId() else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("users").child(chatPartnerId)
+        
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            
+            let user = User()
+            user.id = chatPartnerId
+            user.username = dictionary["username"] as? String
+            user.email = dictionary["email"] as? String
+            user.profileImageUrl = dictionary["profileImageUrl"] as? String
+            
+            self.showChatController(user)
+            
+        }, withCancel: nil)
+        
+    }
 
   
 //    func defaultMessage{

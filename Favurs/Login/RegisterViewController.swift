@@ -107,7 +107,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     private func registerUserIntoDatabaseWithUID(_ uid:String, values: [String:AnyObject]){
         
-        let userReference = self.database.child("Users").child(uid)
+        let userReference = self.database.child("users").child(uid)
         
         
         userReference.updateChildValues(values, withCompletionBlock: { (error, databaseRef) in

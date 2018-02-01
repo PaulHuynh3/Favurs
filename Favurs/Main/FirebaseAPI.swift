@@ -15,7 +15,7 @@ class FirebaseAPI: NSObject {
     
     class func fetchDatabaseUser(uid:String, completion:@escaping (_ user:User) -> Void){
         
-        Database.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject]{
                 
@@ -33,7 +33,7 @@ class FirebaseAPI: NSObject {
     }
     class func fetchDatabaseAllUsers(completion:@escaping (_ user: User) -> Void){
         
-         Database.database().reference().child("Users").observe(.childAdded, with: { (snapshot) in
+         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
          
          if let dictionary = snapshot.value as? [String:AnyObject]{
          let user = User()
