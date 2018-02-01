@@ -62,15 +62,24 @@ class MessagingTableViewController: UITableViewController {
                             return message1.timestamp!.int32Value > message2.timestamp!.int32Value
                         })
                     }
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                }
+                    
+                    //the timer makes it so the execution can be scheduled to execute so let the cell almost finish loading before we reload the cells.
+                   self.timer?.invalidate()
+                   self.timer = Timer.scheduledTimer(timeInterval:0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+              }
                 
             }, withCancel: nil)
             
         }, withCancel: nil)
         
+    }
+    
+    var timer: Timer?
+    @objc func handleReloadTable() {
+        DispatchQueue.main.async {
+            //everytime the observemessage is called reload tableview is called.. so we need to make it only call it once.
+            self.tableView.reloadData()
+        }
     }
     
     
