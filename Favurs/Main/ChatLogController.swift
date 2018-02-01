@@ -26,13 +26,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //handles the blocking of the keyboard and the top view
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
+        //everytime inset is changed this is required.
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
         //for scrolling
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
+        //programmatically register cell identifier..
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
     }
     
     func observeMessages(){
@@ -61,11 +70,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     }
                     
                 }
-                
-           
             }, withCancel: nil)
-            
-            
         }, withCancel: nil)
     }
     
@@ -90,21 +95,36 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let message = messages[indexPath.item]
         cell.textView.text = message.text
         
-        
-        cell.backgroundColor = UIColor.blue
+        //modify bubbleview's width
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 32
         
         return cell
     }
     
     //make the collection view size stretch entirely horizontally.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        //get estimated height
+        if let text = messages[indexPath.item].text {
+            height = estimateFrameForText(text: text).height + 20
+        }
         
-        return CGSize(width: view.frame.width, height:80)
+        return CGSize(width: view.frame.width, height:height)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = true
+    private func estimateFrameForText(text:String) -> CGRect {
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes:[NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)], context: nil)
     }
+    
+    //method gets called when device is rotated to landscape/portrait and adjust the constraints accordingly. This fix is only for constraints.
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
     
     //MARK:UI Functions
     func setupInputComponents() {
@@ -166,6 +186,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 print(error)
                 return
             }
+            //clears the button after clicking send.
+            self.inputTextField.text = nil
             
             //create new node in firebase that seperates user messages its fans out the database nodes(creates a new tree that uses the old tree as reference) episode 11.
             //this is to add the from receipient

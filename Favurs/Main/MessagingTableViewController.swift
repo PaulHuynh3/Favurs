@@ -52,8 +52,8 @@ class MessagingTableViewController: UITableViewController {
                     message.text = dictionary["text"] as? String
                     
                     //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
-                    if let toId = message.toID {
-                        self.messagesDictionary[toId] = message
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messagesDictionary[chatPartnerId] = message
                         //set the messages arry equal to the messagesDictionary which contains all the messages..
                         self.messages = Array(self.messagesDictionary.values)
                         
