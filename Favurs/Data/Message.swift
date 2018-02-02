@@ -15,7 +15,7 @@ class Message: NSObject {
     var text: String?
     var timestamp: NSNumber?
     var toID: String?
-    
+    var imageUrl: String?
     
     
     //determine who is the current user (sender or recipeient)
