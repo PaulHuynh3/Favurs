@@ -58,11 +58,7 @@ class MessagingTableViewController: UITableViewController {
         messageReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String:AnyObject]{
-                let message = Message()
-                message.toID = dictionary["toID"] as? String
-                message.fromID = dictionary["fromID"] as? String
-                message.timestamp = dictionary["timestamp"] as? NSNumber
-                message.text = dictionary["text"] as? String
+                let message = Message(dictionary: dictionary)
                 
                 //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
                 if let chatPartnerId = message.chatPartnerId() {

@@ -39,7 +39,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.keyboardDismissMode = .interactive
         
         //first alt for keyboard management. But since im using the inputaccessoryview method i dont need these functions.
-//        setupKeyboardObservers()
+        setupKeyboardObservers()
 //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
     }
     
@@ -155,46 +155,28 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
-                    self.sendMessageWithImageUrl(imageUrl)
+                    self.sendMessageWithImageUrl(imageUrl, image: image)
                 }
                 
             })
         }
     }
-    
-    fileprivate func sendMessageWithImageUrl(_ imageUrl: String) {
-        let ref = Database.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        let toID = user!.id!
-        let fromID = Auth.auth().currentUser!.uid
-        let timestamp = Int(Date().timeIntervalSince1970)
-        
-        let values = ["imageUrl": imageUrl, "toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
-        
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            self.inputTextField.text = nil
-            
-            let userMessagesRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
-            
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
-            
-            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
-            recipientUserMessagesRef.updateChildValues([messageId: 1])
-        }
-    }
-    
+ 
     
     //keyboard observers technically not using it right now.
     func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardwillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(handleKeyboardDidShow), name: .UIKeyboardDidShow, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardwillShow), name: .UIKeyboardWillShow, object: nil)
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func handleKeyboardDidShow(){
+        if messages.count > 0 {
+        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -237,16 +219,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
                 
-                let message = Message()
-                message.fromID = dictionary["fromID"] as? String
-                message.toID = dictionary["toID"] as? String
-                message.text = dictionary["text"] as? String
-                message.timestamp = dictionary["timestamp"] as? NSNumber
-                message.imageUrl = dictionary["imageUrl"] as? String
+                //using init method to set message's properties
+                let message = Message(dictionary: dictionary)
+        
              
                     self.messages.append(message)
                     DispatchQueue.main.async {
                         self.collectionView?.reloadData()
+                        //SCROLL TO the last index
+                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                     }
                     
             }, withCancel: nil)
@@ -279,7 +261,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //modify bubbleview's width
         if let text = message.text {
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
+        } else if message.imageUrl != nil {
+            //fall in here if its image message
+            cell.bubbleWidthAnchor?.constant = 200
         }
+        
         return cell
     }
     
@@ -320,10 +306,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     //make the collection view size stretch entirely horizontally.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
-        //get estimated height
-        if let text = messages[indexPath.item].text {
+        
+        let message = messages[indexPath.item]
+        
+        if let text = message.text {
             height = estimateFrameForText(text: text).height + 20
+        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
+            //figure out exact height of the image
+            // h1/w1 = h2/w2... thus h1 = h2/w2 *w1
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
+        
         let width = UIScreen.main.bounds.width
         
         return CGSize(width: width, height:height)
@@ -346,6 +339,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var containerViewBottomAnchor: NSLayoutConstraint?
     
     @objc func handleSend() {
+        let properties = ["text": inputTextField.text!]
+        sendMessageWithProperties(properties: properties as [String : AnyObject])
+    }
+    
+    fileprivate func sendMessageWithImageUrl(_ imageUrl: String, image: UIImage) {
+        
+        let properties = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height] as [String: AnyObject]
+        
+        sendMessageWithProperties(properties: properties)
+    }
+    
+    private func sendMessageWithProperties(properties: [String: AnyObject]){
         let ref = Database.database().reference().child("messages")
         //generates a new message id
         let childRef = ref.childByAutoId()
@@ -353,7 +358,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let fromID = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         
-        let values = ["text": self.inputTextField.text!, "toID": toID, "fromID":fromID, "timestamp":timestamp] as [String : Any]
+        var values: [String: AnyObject] = ["toID": toID as AnyObject, "fromID": fromID as AnyObject, "timestamp": timestamp as AnyObject]
+        
+        //append properties dictionary onto values.. key $0 , value $1
+        properties.forEach({values[$0] = $1})
         
         childRef.updateChildValues(values) { (error, ref) in
             if error != nil {
