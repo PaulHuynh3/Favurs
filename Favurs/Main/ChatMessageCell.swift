@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 //programmatically setup view.
 class ChatMessageCell: UICollectionViewCell {
+    var chatLogController: ChatLogController?
+    
     //so that the chatlog controller can access these anchors and modify it
     var bubbleWidthAnchor: NSLayoutConstraint?
     var bubbleViewRightAnchor: NSLayoutConstraint?
@@ -49,7 +51,7 @@ class ChatMessageCell: UICollectionViewCell {
         return imageview
     }()
     
-    let messageImageView: UIImageView = {
+    lazy var messageImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 16
