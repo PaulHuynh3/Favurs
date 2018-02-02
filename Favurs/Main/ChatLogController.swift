@@ -27,9 +27,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         //handles the blocking of the keyboard and the top view
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
-        //everytime inset is changed this is required.
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+
         
         //for scrolling
         collectionView?.alwaysBounceVertical = true
@@ -37,16 +36,104 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //programmatically register cell identifier..
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
-        setupInputComponents()
+        collectionView?.keyboardDismissMode = .interactive
+        
+        //first alt for keyboard management. But since im using the inputaccessoryview method i dont need these functions.
+//        setupInputComponents()
+//        setupKeyboardObservers()
+//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
     
+    lazy var inputContainerView: UIView = {
+        let containerView = UIView()
+        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
+        containerView.backgroundColor = UIColor.white
+        
+        let sendButton = UIButton(type: .system)
+        sendButton.setTitle("Send", for: UIControlState())
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        containerView.addSubview(sendButton)
+        //x,y,w,h
+        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        
+        containerView.addSubview(self.inputTextField)
+        //x,y,w,h
+        self.inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
+        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        
+        let separatorLineView = UIView()
+        separatorLineView.backgroundColor = UIColor(red: 220, green: 220, blue: 220, alpha: 1)
+        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(separatorLineView)
+        //x,y,w,h
+        separatorLineView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        return containerView
+    }()
+    
+    //this is the bottom of the uicollectionview(which we can use to type) THIS IS the better way for keyboard management instead of setting observers.
+    override var inputAccessoryView: UIView? {
+        get {
+            return inputContainerView
+        }
+    }
+    
+    override var canBecomeFirstResponder : Bool {
+        return true
+    }
+    
+    
+    
+    func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardwillShow), name: .UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        //prevent memory leak remove the notification as an observer. if you go into multiple users it will keep running the handlekeyboard notification multiple times.
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func handleKeyboardwillShow(notification: NSNotification){
+        //get the height of the keyboard and pop the view up
+        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        //pop up the view when keyboard shows.
+        containerViewBottomAnchor?.constant = -keyboardFrame!.height
+        UIView.animate(withDuration: keyboardDuration!, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @objc func handleKeyboardWillHide(notification: NSNotification){
+        //moves the view back down when keyboard goes away
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        containerViewBottomAnchor?.constant = 0
+        UIView.animate(withDuration: keyboardDuration!, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
     func observeMessages(){
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {return}
+        let userMessagesRef = Database.database().reference().child("user-messages").child(uid).child(toId)
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
@@ -62,14 +149,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 message.text = dictionary["text"] as? String
                 message.timestamp = dictionary["timestamp"] as? NSNumber
                 
-                if message.chatPartnerId() == self.user?.id {
+             
                     self.messages.append(message)
-                    
                     DispatchQueue.main.async {
                         self.collectionView?.reloadData()
                     }
                     
-                }
             }, withCancel: nil)
         }, withCancel: nil)
     }
@@ -119,7 +204,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
         } else {
             //incoming gray
-            cell.bubbleView.backgroundColor = UIColor(red: 240, green: 240, blue: 240, alpha: 1)
+            cell.bubbleView.backgroundColor = ChatMessageCell.grayColor
             cell.textView.textColor = UIColor.black
             cell.profileImageView.isHidden = false
             
@@ -137,8 +222,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if let text = messages[indexPath.item].text {
             height = estimateFrameForText(text: text).height + 20
         }
+        let width = UIScreen.main.bounds.width
         
-        return CGSize(width: view.frame.width, height:height)
+        return CGSize(width: width, height:height)
     }
     
     private func estimateFrameForText(text:String) -> CGRect {
@@ -154,6 +240,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
+    //putting it outside so it can be access thru all functions to pull it up when the keyboard comes up.
+    var containerViewBottomAnchor: NSLayoutConstraint?
     
     //MARK:UI Functions
     func setupInputComponents() {
@@ -166,7 +254,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //ios9 constraint anchors
         //x,y,w,h
         containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        containerViewBottomAnchor = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        containerViewBottomAnchor?.isActive = true
+        
+        
         containerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -189,7 +281,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
         let separatorLineView = UIView()
-        separatorLineView.backgroundColor = UIColor(red: 220, green: 220, blue: 220, alpha: 1)
+        separatorLineView.backgroundColor = UIColor(red: 220, green: 220, blue: 220, alpha: 1.0)
         separatorLineView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(separatorLineView)
         //x,y,w,h
@@ -220,14 +312,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             //create new node in firebase that seperates user messages its fans out the database nodes(creates a new tree that uses the old tree as reference) episode 11.
             //this is to add the from receipient
-            let userMessageRef = Database.database().reference().child("user-messages").child(fromID)
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
             
             //this key gets the automatically generated key by ref.childbyautoid
             let messageId = childRef.key
             userMessageRef.updateChildValues([messageId: 1])
             
             //adding the to receipient
-            let receipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID)
+            let receipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
             receipientUserMessagesRef.updateChildValues([messageId: 1])
         }
         

@@ -15,7 +15,9 @@ class ChatMessageCell: UICollectionViewCell {
     var bubbleViewRightAnchor: NSLayoutConstraint?
     var bubbleViewLeftAnchor: NSLayoutConstraint?
     
-    static let blueColor = UIColor(red: 0, green: 137, blue: 249, alpha: 1)
+    static let blueColor = UIColor(red: 0, green: 0, blue: 255, alpha: 0.8)
+    //Gray colour wont appear on chat: static let grayColor = UIColor(red: 105, green: 105, blue: 105, alpha: 1.0)
+    static let grayColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1.0)
     
     let textView: UITextView = {
         let tv = UITextView()
@@ -61,17 +63,20 @@ class ChatMessageCell: UICollectionViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         //x,y,w,h
+        
         bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
+        
         bubbleViewRightAnchor?.isActive = true
         
         bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8)
-        //by default its false.
-//        bubbleViewLeftAnchor?.isActive = false
+        //        bubbleViewLeftAnchor?.active = false
+        
+        
+        bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
         bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
         bubbleWidthAnchor?.isActive = true
         
-        bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
         //ios 9 constraints

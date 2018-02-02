@@ -36,46 +36,62 @@ class MessagingTableViewController: UITableViewController {
         let ref = Database.database().reference().child("user-messages").child(uid)
         //.childAdded returns a specific element like messages associated with the key
         ref.observe(.childAdded, with: { (snapshot) in
-        
-            let messageId = snapshot.key
-            //within the tree of the database messages... snapshot.key takes the user-messages of all messages relating to the currently logged in user.
-            let messageReference = Database.database().reference().child("messages").child(messageId)
-            
-            //.value returns all the value associated with the child references
-            messageReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            //snapshot gives child node of uid which is the node under..
+            let userId = snapshot.key
+            Database.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
                 
-                if let dictionary = snapshot.value as? [String:AnyObject]{
-                    let message = Message()
-                    message.toID = dictionary["toID"] as? String
-                    message.fromID = dictionary["fromID"] as? String
-                    message.timestamp = dictionary["timestamp"] as? NSNumber
-                    message.text = dictionary["text"] as? String
-                    
-                    //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messagesDictionary[chatPartnerId] = message
-                        //set the messages arry equal to the messagesDictionary which contains all the messages..
-                        self.messages = Array(self.messagesDictionary.values)
-                        
-                        //does a comparison to see which timestamp is greater and put that message on top.
-                        self.messages.sort(by: { (message1, message2) -> Bool in
-                            return message1.timestamp!.int32Value > message2.timestamp!.int32Value
-                        })
-                    }
-                    
-                    //the timer makes it so the execution can be scheduled to execute so let the cell almost finish loading before we reload the cells.
-                   self.timer?.invalidate()
-                   self.timer = Timer.scheduledTimer(timeInterval:0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-              }
+                let messageId = snapshot.key
+                
+                self.fetchMessageWithMessageId(messageId: messageId)
                 
             }, withCancel: nil)
+                
+            }, withCancel: nil)
+        
+    }
+    
+    private func fetchMessageWithMessageId(messageId: String) {
+        //within the tree of the database messages... snapshot.key takes the user-messages of all messages relating to the currently logged in user.
+        let messageReference = Database.database().reference().child("messages").child(messageId)
+        
+        //.value returns all the value associated with the child references
+        messageReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String:AnyObject]{
+                let message = Message()
+                message.toID = dictionary["toID"] as? String
+                message.fromID = dictionary["fromID"] as? String
+                message.timestamp = dictionary["timestamp"] as? NSNumber
+                message.text = dictionary["text"] as? String
+                
+                //This dictionary stores all the people who sent the messages by their ID therefore you can group messages together.
+                if let chatPartnerId = message.chatPartnerId() {
+                    self.messagesDictionary[chatPartnerId] = message
+                    
+                }
+                self.attemptReloadOfTable()
+                
+            }
             
         }, withCancel: nil)
-        
+    }
+    
+    private func attemptReloadOfTable() {
+        //the timer makes it so the execution can be scheduled to execute so let the cell almost finish loading before we reload the cells.
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval:0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
     }
     
     var timer: Timer?
     @objc func handleReloadTable() {
+        //set the messages arry equal to the messagesDictionary which contains all the messages.. This will reconstruct it right before the table reloads.
+        self.messages = Array(self.messagesDictionary.values)
+        
+        //does a comparison to see which timestamp is greater and put that message on top.
+        self.messages.sort(by: { (message1, message2) -> Bool in
+            return message1.timestamp!.int32Value > message2.timestamp!.int32Value
+        })
+        
         DispatchQueue.main.async {
             //everytime the observemessage is called reload tableview is called.. so we need to make it only call it once.
             self.tableView.reloadData()
