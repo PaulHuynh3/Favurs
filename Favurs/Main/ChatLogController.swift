@@ -8,8 +8,11 @@
 
 import UIKit
 import Firebase
+import MobileCoreServices
+import AVFoundation
+
 //programmatically set up view.
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var messages = [Message]()
     let cellId = "cellId"
@@ -19,7 +22,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //set before viewdidload
         didSet {
             navigationItem.title = user?.username
-            
+            //sets the messages.
             observeMessages()
         }
     }
@@ -28,8 +31,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         super.viewDidLoad()
         //handles the blocking of the keyboard and the top view
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-
-        
         //for scrolling
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
@@ -110,8 +111,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     @objc func handleUploadTap(){
         let imagePickerController = UIImagePickerController()
+        
         imagePickerController.allowsEditing = true
         imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+        
         present(imagePickerController, animated: true, completion: nil)
     }
     
@@ -120,8 +124,69 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        //get image from imagepicker controller
+   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        //selected video. get the video selected from selected pickercontroller
+        if let videoUrl = info[UIImagePickerControllerMediaURL] as? URL{
+            handleVideoSelectedForUrl(url: videoUrl)
+        } else {
+            //we selected an image
+            handleImageSelectedForInfo(info as [String : AnyObject])
+            }
+   
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func handleVideoSelectedForUrl(url:URL){
+        //generate random string.
+        let filename = NSUUID().uuidString + ".mov"
+        //make a reference to the storage.
+       let uploadTask = Storage.storage().reference().child(filename).putFile(from: url, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                print("Failed upload of video:", error)
+                return
+            }
+            if let videoUrl = metadata?.downloadURL()?.absoluteString {
+                
+                if let thumbnailImage = self.thumbnailImageForFileUrl(fileUrl: url) {
+                    
+                    self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
+                        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": thumbnailImage.size.width as AnyObject, "imageHeight": thumbnailImage.size.height as AnyObject, "videoUrl": videoUrl as AnyObject]
+                        self.sendMessageWithProperties(properties: properties)
+                        
+                    })
+                }
+            }
+        })
+        //showing the progress of the upload.
+        uploadTask.observe(.progress) { (snapshot) in
+            if let completedUnitCount = snapshot.progress?.completedUnitCount {
+                self.navigationItem.title = String(completedUnitCount)
+            }
+        }
+        uploadTask.observe(.success) { (snapshot) in
+            self.navigationItem.title = self.user?.username
+        }
+    }
+    //make it a optional uiimage? so i can return nil.
+    private func thumbnailImageForFileUrl(fileUrl: URL) -> UIImage?{
+        let asset = AVAsset(url: fileUrl)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do {
+            
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailCGImage)
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return nil
+    }
+    
+    private func handleImageSelectedForInfo(_ info: [String: AnyObject]) {
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -132,21 +197,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         if let selectedImage = selectedImageFromPicker {
-            uploadToFirebaseStorageUsingImage(selectedImage)
+            uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
+                self.sendMessageWithImageUrl(imageUrl, image: selectedImage)
+            })
         }
-        
-        dismiss(animated: true, completion: nil)
     }
     
     //upload images to firebase database..
-    fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage) {
-        //generate unique image name.
+    private func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
         let imageName = UUID().uuidString
-        //create a new reference to storage to store the pics
         let ref = Storage.storage().reference().child("message_images").child(imageName)
         
         if let uploadData = UIImageJPEGRepresentation(image, 0.2) {
-            
             ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 
                 if error != nil {
@@ -155,7 +217,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
-                    self.sendMessageWithImageUrl(imageUrl, image: image)
+                    completion(imageUrl)
                 }
                 
             })
