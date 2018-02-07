@@ -27,8 +27,35 @@ class MessagingTableViewController: UITableViewController {
         //moving this into setupnavbarwithuser.... (check if it will work with my code tmrw)
         //should be able to see messages instantly and clear the old ones.
 //        observeUserMessages()
+        //reveal delete button
+        tableView.allowsSelectionDuringEditing = true
     }
-    
+     //reveal delete button
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    //performs deletion here
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let message = self.messages[indexPath.row]
+        
+        if let chatPartnerId = message.chatPartnerId() {
+            Database.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue(completionBlock: { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete message:", error!)
+                    return
+                }
+                
+                self.messagesDictionary.removeValue(forKey: chatPartnerId)
+                self.attemptReloadOfTable()
+                
+            })
+        }
+    }
     
     func observeUserMessages(){
         guard let uid = Auth.auth().currentUser?.uid else {return }
@@ -46,8 +73,14 @@ class MessagingTableViewController: UITableViewController {
                 
             }, withCancel: nil)
                 
-            }, withCancel: nil)
+        }, withCancel: nil)
         
+        //check to see if data was remove from database.. therefore the deleted message wont show on the application anymore.
+        ref.observe(.childRemoved, with: { (snapshot) in
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
+            self.attemptReloadOfTable()
+            
+        }, withCancel: nil)
     }
     
     private func fetchMessageWithMessageId(messageId: String) {
