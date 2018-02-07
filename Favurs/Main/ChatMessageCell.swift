@@ -6,20 +6,59 @@
 //  Copyright © 2018 Paul. All rights reserved.
 //
 
-import Foundation
 import UIKit
-//programmatically setup view.
+import AVFoundation
+
 class ChatMessageCell: UICollectionViewCell {
+    
+    var message: Message?
+    
     var chatLogController: ChatLogController?
     
-    //so that the chatlog controller can access these anchors and modify it
-    var bubbleWidthAnchor: NSLayoutConstraint?
-    var bubbleViewRightAnchor: NSLayoutConstraint?
-    var bubbleViewLeftAnchor: NSLayoutConstraint?
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        aiv.translatesAutoresizingMaskIntoConstraints = false
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
     
-    static let blueColor = UIColor(red: 0, green: 0, blue: 255, alpha: 0.8)
-    //Gray colour wont appear on chat: static let grayColor = UIColor(red: 105, green: 105, blue: 105, alpha: 1.0)
-    static let grayColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1.0)
+    lazy var playButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "play")
+        button.tintColor = UIColor.white
+        button.setImage(image, for: UIControlState())
+        
+        button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var playerLayer: AVPlayerLayer?
+    var player: AVPlayer?
+    
+    @objc func handlePlay() {
+        if let videoUrlString = message?.videoUrl, let url = URL(string: videoUrlString) {
+            player = AVPlayer(url: url)
+            
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = bubbleView.bounds
+            bubbleView.layer.addSublayer(playerLayer!)
+            
+            player?.play()
+            activityIndicatorView.startAnimating()
+            playButton.isHidden = true
+            
+            print("Attempting to play video......???")
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        player?.pause()
+        activityIndicatorView.stopAnimating()
+    }
     
     let textView: UITextView = {
         let tv = UITextView()
@@ -32,9 +71,11 @@ class ChatMessageCell: UICollectionViewCell {
         return tv
     }()
     
+    static let blueColor = UIColor(red: 0, green: 0, blue: 255, alpha: 1)
+    static let grayColor = UIColor(red: 88, green: 88, blue: 88, alpha: 1)
+    
     let bubbleView: UIView = {
         let view = UIView()
-        //ALPHA MAY NOT BE RIGHT
         view.backgroundColor = blueColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
@@ -43,12 +84,12 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     let profileImageView: UIImageView = {
-        let imageview = UIImageView()
-        imageview.translatesAutoresizingMaskIntoConstraints = false
-        imageview.layer.cornerRadius = 16
-        imageview.layer.masksToBounds = true
-        imageview.contentMode = .scaleAspectFill
-        return imageview
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     lazy var messageImageView: UIImageView = {
@@ -64,11 +105,20 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     @objc func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
+        //for videos there is no zooming animation.
+        if message?.videoUrl != nil {
+            return
+        }
+        
         if let imageView = tapGesture.view as? UIImageView {
             //PRO Tip: don't perform a lot of custom logic inside of a view class
             self.chatLogController?.performZoomInForStartingImageView(imageView)
         }
     }
+    
+    var bubbleWidthAnchor: NSLayoutConstraint?
+    var bubbleViewRightAnchor: NSLayoutConstraint?
+    var bubbleViewLeftAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,6 +132,20 @@ class ChatMessageCell: UICollectionViewCell {
         messageImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+        
+        bubbleView.addSubview(playButton)
+        //x,y,w,h
+        playButton.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        playButton.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        playButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        playButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        bubbleView.addSubview(activityIndicatorView)
+        //x,y,w,h
+        activityIndicatorView.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        activityIndicatorView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        activityIndicatorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         //x,y,w,h
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
@@ -122,6 +186,5 @@ class ChatMessageCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
 }

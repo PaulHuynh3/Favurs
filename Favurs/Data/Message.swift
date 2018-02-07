@@ -20,6 +20,7 @@ class Message: NSObject {
     var imageHeight: NSNumber?
     var imageWidth: NSNumber?
     
+    var videoUrl: String?
     
     //determine who is the current user (sender or recipeient)
     func chatPartnerId() -> String? {
@@ -42,6 +43,8 @@ class Message: NSObject {
         imageUrl = dictionary["imageUrl"] as? String
         imageHeight = dictionary["imageHeight"] as? NSNumber
         imageWidth = dictionary["imageWidth"] as? NSNumber
+        
+        videoUrl = dictionary["videoUrl"] as? String
     }
     
     
