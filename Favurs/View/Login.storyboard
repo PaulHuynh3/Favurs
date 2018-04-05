@@ -22,19 +22,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BlueRectangle" translatesAutoresizingMaskIntoConstraints="NO" id="BZL-AB-T5K">
-                                <rect key="frame" x="20" y="247" width="335" height="52"/>
+                                <rect key="frame" x="20" y="203" width="335" height="52"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z2Q-UJ-ecw">
-                                <rect key="frame" x="31" y="264.66666666666669" width="312" height="17"/>
+                                <rect key="frame" x="31" y="220.66666666666666" width="312" height="17"/>
                                 <color key="textColor" red="0.0" green="0.44313725490196076" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BlueRectangle" translatesAutoresizingMaskIntoConstraints="NO" id="RtI-Z8-Kre">
-                                <rect key="frame" x="20" y="307" width="335" height="52"/>
+                                <rect key="frame" x="20" y="263" width="335" height="52"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z1d-i9-mD8">
-                                <rect key="frame" x="31" y="324.66666666666669" width="312" height="17"/>
+                                <rect key="frame" x="31" y="280.66666666666669" width="312" height="17"/>
                                 <color key="textColor" red="0.0" green="0.44313725490196076" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -62,7 +62,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="8FF-mI-UtO">
-                                <rect key="frame" x="60" y="133" width="254" height="77"/>
+                                <rect key="frame" x="60" y="89" width="254" height="77"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDR-Z3-SLz">
                                 <rect key="frame" x="115" y="673" width="140" height="43"/>
@@ -70,6 +70,14 @@
                                 <state key="normal" title="Forgot password"/>
                                 <connections>
                                     <segue destination="GhI-OP-TQo" kind="show" id="ZpV-AJ-O8d"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="20I-gB-4jY">
+                                <rect key="frame" x="152" y="489" width="88" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="FACEBOOK"/>
+                                <connections>
+                                    <action selector="facebookLoginTapped:" destination="Mzc-1P-zeA" eventType="touchUpInside" id="tWt-ho-hED"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1195,7 +1203,7 @@ zrDWsNmw67DusPMAAAAAAAACAQAAAAAAAABBAAAAAAAAAAAAAAAAAACw9Q
         <image name="profilePage" width="25" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MVS-3Y-yM1"/>
+        <segue reference="ZpV-AJ-O8d"/>
         <segue reference="W8N-fY-Xfm"/>
     </inferredMetricsTieBreakers>
 </document>

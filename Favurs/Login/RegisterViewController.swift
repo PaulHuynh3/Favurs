@@ -133,7 +133,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             if UIImagePickerController.isSourceTypeAvailable(.camera){
             imagePickerController.sourceType = UIImagePickerControllerSourceType.camera
             imagePickerController.allowsEditing = true
-                imagePickerController.delegate = self
+            imagePickerController.delegate = self
             self.present(imagePickerController, animated: true, completion: nil)
             } else {
                 print("Sorry camera not available")

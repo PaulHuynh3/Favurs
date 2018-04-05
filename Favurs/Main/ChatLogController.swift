@@ -430,7 +430,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let childRef = ref.childByAutoId()
         let toID = user!.id!
         let fromID = Auth.auth().currentUser!.uid
-        let timestamp = Int(Date().timeIntervalSince1970)
+        let timestamp = NSNumber(value: Int(Date().timeIntervalSince1970))
         
         var values: [String: AnyObject] = ["toID": toID as AnyObject, "fromID": fromID as AnyObject, "timestamp": timestamp as AnyObject]
         

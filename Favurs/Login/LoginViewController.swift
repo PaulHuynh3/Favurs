@@ -25,27 +25,59 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 //        }
         
         //configure facebok login button.
-        let loginButton = FBSDKLoginButton()
-        view.addSubview(loginButton)
-        loginButton.readPermissions = ["public_profile", "email"]
-        loginButton.center = view.center
-        loginButton.delegate = self
+//       let loginButton = FBSDKLoginButton()
+//        view.addSubview(loginButton)
+//        loginButton.readPermissions = ["public_profile", "email"]
+//        loginButton.center = view.center
+//        loginButton.delegate = self
     }
+    
+    
+    @IBAction func facebookLoginTapped(_ sender: Any) {
+        
+        let fbLoginManager: FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
+            let fbLoginResult: FBSDKLoginManagerLoginResult = result!
+            //if user cancel the login
+            if (result?.isCancelled)!{
+                return
+            }
+            if fbLoginResult.grantedPermissions.contains("email"){
+                self.getFBUserData()
+            }
+            
+        }
+        
+    }
+    
+    func getFBUserData(){
+        if((FBSDKAccessToken.current()) != nil){
+            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+                if (error == nil){
+                    //everything works print the user data
+                    print(result)
+                }
+            })
+        }
+    }
+    
+    
     
     //MARK: Facebook delegate methods.
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("LOGGED OUT OF FACEBOOK")
     }
     
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        if error != nil {
-            print("Error loging in")
-            return
-        }
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        appDelegate?.transitionToUserHome()
-        print("SUCCESSFULLY LOGGED INTO FACEBOOK")
-    }
+    //if using the login button facebook designed for us.
+//    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+//        if error != nil {
+//            print("Error loging in")
+//            return
+//        }
+//        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+//        appDelegate?.transitionToUserHome()
+//        print("SUCCESSFULLY LOGGED INTO FACEBOOK")
+//    }
     
     //MARK: sign in with email and password.
     @IBAction func signInButtonTapped(_ sender: Any) {

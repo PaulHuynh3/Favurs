@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-let imageCache = NSCache<NSString, AnyObject>()
+let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
     //So that the downloaded images dont need to be downloaded again. Saves networking data.
@@ -18,7 +18,7 @@ extension UIImageView {
         //blank out white space to take out flashing.
         self.image = nil
         
-        if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage{
+        if let cachedImage = imageCache.object(forKey: urlString as NSString){
             self.image = cachedImage
             return
         }
